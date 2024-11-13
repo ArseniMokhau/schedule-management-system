@@ -24,7 +24,6 @@ function Map() {
 
         // Check if the response is not ok (e.g., 404 or 500 status)
         if (!response.ok) {
-            // If it's a 404 (no classes for this day), we treat it as a normal situation
             if (response.status === 404) {
                 setClassroomStatus([]); // Optionally, clear classroom statuses if no classes are found
                 setErrorMessage(`No classes found for the specified day of the week: ${new Date(polandTime).toLocaleString('en-us', { weekday: 'long' })}.`);
@@ -39,9 +38,7 @@ function Map() {
 
         // Adjust recurrenceEndTime from "1.00:00:00" to "24:00:00"
         const correctedClasses = fetchedClasses.map(classData => {
-            // Check if the recurrenceEndTime is "1.00:00:00"
             if (classData.recurrenceEndTime === "1.00:00:00") {
-                // Correct it to "24:00:00"
                 classData.recurrenceEndTime = "24:00:00";
             }
             return classData;
@@ -53,13 +50,10 @@ function Map() {
         correctedClasses.forEach((classData) => {
             const { roomNumber, recurrenceStartTime, recurrenceEndTime, recurrenceDay } = classData;
 
-            // Only process classes for the current day
             if (recurrenceDay === dayOfWeek) {
-                // Parse the start and end times with today’s date in Poland’s timezone
                 const startTime = parseISO(`${polandTime.toISOString().split('T')[0]}T${recurrenceStartTime}`);
                 const endTime = parseISO(`${polandTime.toISOString().split('T')[0]}T${recurrenceEndTime}`);
 
-                // Check if the current time is within the class time range
                 if (isWithinInterval(polandTime, { start: startTime, end: endTime })) {
                     activeClassrooms.push(roomNumber);
                 }
@@ -68,17 +62,23 @@ function Map() {
 
         // Update classroom statuses and teacher names based on active classrooms
         const updatedClassroomStatus = currentFloor.classrooms.map((classroom) => {
-            // Find the class data matching the current classroom
             const matchingClass = correctedClasses.find(classData => classData.roomNumber === classroom.number);
             const teacherName = matchingClass ? matchingClass.teacherName : '';
             const teacherId = matchingClass ? matchingClass.teacherId : '';
             const roomId = matchingClass ? matchingClass.roomId : '';
             const classTitle = matchingClass ? matchingClass.classTitle : '';
+            const recurrenceStartTime = matchingClass ? matchingClass.recurrenceStartTime : '';
+            const recurrenceEndTime = matchingClass ? matchingClass.recurrenceEndTime : '';
 
             return {
                 ...classroom,
                 status: activeClassrooms.includes(classroom.number) ? 'taken' : 'empty',
-                teacherName: teacherName, // Include teacher name in the classroom status
+                teacherName,
+                teacherId,
+                roomId,
+                classTitle,
+                recurrenceStartTime,
+                recurrenceEndTime
             };
         });
 
@@ -91,15 +91,12 @@ function Map() {
     }
 }, [currentFloor]);
 
-
-
   // useEffect to fetch classroom data on mount and refresh every 5 minutes
   useEffect(() => {
     fetchClassroomData(); // Call fetchClassroomData when the effect runs
     const interval = setInterval(fetchClassroomData, 5 * 60 * 1000); // Set interval for every 5 minutes
 
-    // Cleanup function to clear the interval when component unmounts
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup function
   }, [currentFloor, fetchClassroomData]);
 
   // Function to change the current floor
@@ -108,18 +105,38 @@ function Map() {
     setCurrentFloor(selectedFloor); // Update the current floor state
   };
 
-  // Render classrooms as buttons with status circles
+  // Render classrooms as containers with information
   const renderClassrooms = () => {
     return classroomStatus.map((classroom, index) => (
-        <button key={index} className="classroom-button">
-            <span>{classroom.number}</span>
-            <span
-                className={`status-circle ${classroom.status === 'taken' ? 'taken' : 'empty'}`}
-            ></span>
-            <span>{classroom.teacherName || 'No teacher'}</span> {/* Display teacher's name */}
-        </button>
+      <div key={index} className="classroom-container">
+        <div className="classroom-header">
+          <a href={`/classroom/${classroom.number}`} className="classroom-number">
+          {classroom.number}
+          </a>
+          <span className={`status-circle ${classroom.status === 'taken' ? 'taken' : 'empty'}`}></span>
+        </div>
+        <div className="classroom-details">
+          { classroom.teacherName ? 
+            (
+              <a href={`/teacher/${classroom.teacherId}`} className="teacher-name">
+                {classroom.teacherName || 'No teacher'}
+              </a>
+            )
+            :
+            (
+              <span className="classroom-number">{'Empty'}</span>
+            )
+          }
+          <div className="class-title">
+            {classroom.classTitle}
+          </div>
+        </div>
+        <div className="classroom-time">
+          {classroom.recurrenceStartTime} - {classroom.recurrenceEndTime}
+        </div>
+      </div>
     ));
-};
+  };
 
   // Function to change the current building
   const handleBuildingChange = (buildingName) => {
@@ -136,17 +153,16 @@ function Map() {
 
       <div className="floor-selector">
         {currentBuilding.floors.map(floor => (
-          <button
-            key={floor.floorNumber}
-            onClick={() => handleFloorChange(floor.floorNumber)}
-          >
+          <button key={floor.floorNumber} onClick={() => handleFloorChange(floor.floorNumber)}>
             Floor {floor.floorNumber}
           </button>
         ))}
       </div>
 
       <div className="classrooms-list">
+        {/*
         <h3>Floor {currentFloor.floorNumber}</h3>
+        */}
         <div className="classrooms">
           {renderClassrooms()}
         </div>
