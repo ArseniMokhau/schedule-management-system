@@ -140,3 +140,357 @@ h2 {
   color: #777;
 }
 
+.date-time-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.time-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.time-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.time-bar .handle {
+  position: absolute;
+  top: -5px;
+  width: 20px;
+  height: 20px;
+  background-color: #3498db;
+  border-radius: 50%;
+  cursor: pointer;
+  left: 0;
+}
+
+.time-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.time-controls button {
+  padding: 10px 15px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.login-register-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; /* Control the max width */
+  box-sizing: border-box; /* Prevents the padding from causing overflow */
+}
+
+.login-register-form input[type="text"],
+.login-register-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-register-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-register-form button:hover {
+  background-color: #45a049;
+}
+
+.login-register-form h2 {
+  text-align: center;
+  font-size: 2em;
+  color: #333;
+}
+
+.login-register-form p {
+  text-align: center;
+  color: red;
+  font-size: 1em;
+}
+
+.login-register-wrapper {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 10px;
+  text-align: center;
+}
+
+.login-register-form input[type="text"],
+.login-register-form input[type="password"] {
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.login-register-form .form-element {
+  margin-bottom: 15px;
+}
+
+.create-class-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-class-container h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.create-class-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.create-class-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.create-class-form .form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #444;
+}
+
+.create-class-form .form-group input,
+.create-class-form .form-group select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+.create-class-form .form-group input:focus,
+.create-class-form .form-group select:focus {
+  border-color: #4a90e2;
+}
+
+.create-class-form .form-group input[type="checkbox"] {
+  width: auto;
+  margin-top: 8px;
+}
+
+.create-class-form button {
+  padding: 12px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.create-class-form button:hover {
+  background-color: #357ab7;
+}
+
+.create-class-form .form-group input[type="time"] {
+  width: 120px;
+}
+
+.create-class-form .form-group select {
+  width: 200px;
+}
+
+.create-class-form .form-group input[type="date"] {
+  width: 200px;
+}
+
+.create-class-form .form-group .form-note {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.create-class-form .form-group .form-note a {
+  color: #4a90e2;
+}
+
+.create-class-form .form-group .form-note a:hover {
+  text-decoration: underline;
+}
+
+/* Styles for room number dropdown */
+.create-class-form .form-group select {
+  background-color: #fff;
+}
+
+.create-class-form .form-group input[type="checkbox"]:checked {
+  background-color: #4a90e2;
+}
+
+/* When the user selects "Repeat Weekly", show additional fields */
+.create-class-form .weekly-recurrence-options {
+  padding-left: 20px;
+  margin-top: 16px;
+}
+
+.create-class-form .weekly-recurrence-options .form-group {
+  margin-bottom: 12px;
+}
+
+.create-class-form .weekly-recurrence-options .form-group label {
+  font-weight: normal;
+}
+
+.create-class-form .weekly-recurrence-options input[type="checkbox"] {
+  margin-top: 0;
+}
+
+.create-class-form .weekly-recurrence-options select {
+  width: 180px;
+}
+
+/* Add a little padding around the container */
+.create-class-container {
+  padding: 40px;
+}
+
+/* Weekly Schedule Container */
+.weekly-schedule-container {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* Error Message */
+.weekly-schedule-error-message {
+  color: red;
+  margin-bottom: 20px;
+}
+
+/* Week Selector */
+.weekly-schedule-week-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.weekly-schedule-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.weekly-schedule-button:hover {
+  background-color: #0056b3;
+}
+
+.weekly-schedule-date-range {
+  font-weight: bold;
+}
+
+/* Week View */
+.weekly-schedule-week {
+  display: flex;
+  gap: 16px;
+}
+
+/* Day Column */
+.weekly-schedule-day-column {
+  flex: 1;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.weekly-schedule-day-title {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Class Card */
+.weekly-schedule-class-card {
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weekly-schedule-class-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.weekly-schedule-class-time {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.weekly-schedule-class-teacher {
+  font-size: 14px;
+  color: #555;
+}
+
+.weekly-schedule-class-type {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 12px;
+  color: white;
+}
+
+.weekly-schedule-recurring {
+  background-color: #28a745;
+}
+
+.weekly-schedule-one-time {
+  background-color: #dc3545;
+}
+
+/* No Classes Message */
+.weekly-schedule-no-classes {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
