@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import buildings from '../data/Buildings';
 
-const CreateClass = () => {
+const CreateClass = ({ onClassCreated }) => {
   // State variables
   const [roomNumber, setRoomNumber] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isOneTimeClass, setIsOneTimeClass] = useState(false);
   const [oneTimeClassFullDate, setOneTimeClassFullDate] = useState('');
-  const [oneTimeClassStartTime, setOneTimeClassStartTime] = useState({ hours: 0, minutes: 0 });
-  const [oneTimeClassEndTime, setOneTimeClassEndTime] = useState({ hours: 0, minutes: 0 });
+  const [oneTimeClassStartTime, setOneTimeClassStartTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [oneTimeClassEndTime, setOneTimeClassEndTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   const [isEveryWeek, setIsEveryWeek] = useState(false);
   const [isEven, setIsEven] = useState(false);
   const [recurrenceDay, setRecurrenceDay] = useState(0);
-  const [recurrenceStartTime, setRecurrenceStartTime] = useState({ hours: 0, minutes: 0 });
-  const [recurrenceEndTime, setRecurrenceEndTime] = useState({ hours: 0, minutes: 0 });
+  const [recurrenceStartTime, setRecurrenceStartTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [recurrenceEndTime, setRecurrenceEndTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   // Fetch classroom numbers from buildings data
   const classrooms = buildings.flatMap(building =>
@@ -25,43 +25,51 @@ const CreateClass = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const teacherId = localStorage.getItem('teacherId');
+    if (!teacherId) {
+        alert('Teacher ID not found. Please log in again.');
+        return;
+    }
+
     // Construct the request body
     const classData = {
-      roomNumber,
-      title,
-      description,
-      isOneTimeClass,
-      oneTimeClassFullDate,
-      oneTimeClassStartTime,
-      oneTimeClassEndTime,
-      isEveryWeek,
-      isEven,
-      recurrenceDay,
-      recurrenceStartTime,
-      recurrenceEndTime,
+        roomNumber,
+        title,
+        description,
+        isOneTimeClass,
+        oneTimeClassFullDate: isOneTimeClass ? oneTimeClassFullDate : null,
+        oneTimeClassStartTime: isOneTimeClass ? oneTimeClassStartTime : { hours: 0, minutes: 0, seconds: 0 },
+        oneTimeClassEndTime: isOneTimeClass ? oneTimeClassEndTime : { hours: 0, minutes: 0, seconds: 0 },
+        isEveryWeek: !isOneTimeClass ? isEveryWeek : false,
+        isEven: !isOneTimeClass && !isEveryWeek ? isEven : false,
+        recurrenceDay: !isOneTimeClass ? recurrenceDay : 0,
+        recurrenceStartTime: !isOneTimeClass ? recurrenceStartTime : { hours: 0, minutes: 0, seconds: 0 },
+        recurrenceEndTime: !isOneTimeClass ? recurrenceEndTime : { hours: 0, minutes: 0, seconds: 0 },
     };
 
     try {
-      // Send the POST request to create the class
-      const response = await fetch('/Main/createClass', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(classData),
-      });
+        // Send the POST request to create the class
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/createClass?teacherId=${teacherId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(classData),
+        });
 
-      const result = await response.json();
-      if (response.ok) {
-        alert('Class created successfully!');
-      } else {
-        alert('Error creating class: ' + result.message);
-      }
+        const result = await response.json();
+        if (response.ok) {
+            alert('Class created successfully!');
+            onClassCreated();
+        } else {
+            alert('Error creating class: ' + result.message);
+        }
     } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while creating the class');
+        console.error('Error:', error);
+        alert('An error occurred while creating the class');
     }
-  };
+};
+
 
   return (
     <div className="create-class-container">
@@ -136,7 +144,7 @@ const CreateClass = () => {
                 value={`${String(oneTimeClassStartTime.hours).padStart(2, '0')}:${String(oneTimeClassStartTime.minutes).padStart(2, '0')}`}
                 onChange={(e) => {
                   const [hours, minutes] = e.target.value.split(':');
-                  setOneTimeClassStartTime({ hours, minutes });
+                  setOneTimeClassStartTime({ hours: Number(hours), minutes: Number(minutes), seconds: 0 });
                 }}
                 required
               />
@@ -149,7 +157,7 @@ const CreateClass = () => {
                 value={`${String(oneTimeClassEndTime.hours).padStart(2, '0')}:${String(oneTimeClassEndTime.minutes).padStart(2, '0')}`}
                 onChange={(e) => {
                   const [hours, minutes] = e.target.value.split(':');
-                  setOneTimeClassEndTime({ hours, minutes });
+                  setOneTimeClassEndTime({ hours: Number(hours), minutes: Number(minutes), seconds: 0 });
                 }}
                 required
               />
@@ -167,62 +175,62 @@ const CreateClass = () => {
               />
             </div>
 
-                <div className="form-group">
-                  <label htmlFor="recurrenceDay">Recurrence Day</label>
-                  <select
-                    id="recurrenceDay"
-                    value={recurrenceDay}
-                    onChange={(e) => setRecurrenceDay(Number(e.target.value))}
-                  >
-                    <option value={0}>Monday</option>
-                    <option value={1}>Tuesday</option>
-                    <option value={2}>Wednesday</option>
-                    <option value={3}>Thursday</option>
-                    <option value={4}>Friday</option>
-                    <option value={5}>Saturday</option>
-                    <option value={6}>Sunday</option>
-                  </select>
-                </div>
+            <div className="form-group">
+              <label htmlFor="recurrenceDay">Recurrence Day</label>
+              <select
+                id="recurrenceDay"
+                value={recurrenceDay}
+                onChange={(e) => setRecurrenceDay(Number(e.target.value))}
+              >
+                <option value={0}>Monday</option>
+                <option value={1}>Tuesday</option>
+                <option value={2}>Wednesday</option>
+                <option value={3}>Thursday</option>
+                <option value={4}>Friday</option>
+                <option value={5}>Saturday</option>
+                <option value={6}>Sunday</option>
+              </select>
+            </div>
 
-                <div className="form-group">
-                  <label>Start Time</label>
-                  <input
-                    type="time"
-                    value={`${String(recurrenceStartTime.hours).padStart(2, '0')}:${String(recurrenceStartTime.minutes).padStart(2, '0')}`}
-                    onChange={(e) => {
-                      const [hours, minutes] = e.target.value.split(':');
-                      setRecurrenceStartTime({ hours, minutes });
-                    }}
-                    required
-                  />
-                </div>
+            <div className="form-group">
+              <label>Start Time</label>
+              <input
+                type="time"
+                value={`${String(recurrenceStartTime.hours).padStart(2, '0')}:${String(recurrenceStartTime.minutes).padStart(2, '0')}`}
+                onChange={(e) => {
+                  const [hours, minutes] = e.target.value.split(':');
+                  setRecurrenceStartTime({ hours: Number(hours), minutes: Number(minutes), seconds: 0 });
+                }}
+                required
+              />
+            </div>
 
-                <div className="form-group">
-                  <label>End Time</label>
-                  <input
-                    type="time"
-                    value={`${String(recurrenceEndTime.hours).padStart(2, '0')}:${String(recurrenceEndTime.minutes).padStart(2, '0')}`}
-                    onChange={(e) => {
-                      const [hours, minutes] = e.target.value.split(':');
-                      setRecurrenceEndTime({ hours, minutes });
-                    }}
-                    required
-                  />
-                </div>
-                { !isEveryWeek && (
-                    <div className="form-group">
-                        <label htmlFor="isEven">Even Weeks</label>
-                        <input
-                        type="checkbox"
-                        id="isEven"
-                        checked={isEven}
-                        onChange={() => setIsEven((prev) => !prev)}
-                        />
-                    </div>
-                )
-                }
-              </>
+            <div className="form-group">
+              <label>End Time</label>
+              <input
+                type="time"
+                value={`${String(recurrenceEndTime.hours).padStart(2, '0')}:${String(recurrenceEndTime.minutes).padStart(2, '0')}`}
+                onChange={(e) => {
+                  const [hours, minutes] = e.target.value.split(':');
+                  setRecurrenceEndTime({ hours: Number(hours), minutes: Number(minutes), seconds: 0 });
+                }}
+                required
+              />
+            </div>
+
+            {!isEveryWeek && (
+              <div className="form-group">
+                <label htmlFor="isEven">Even Weeks</label>
+                <input
+                  type="checkbox"
+                  id="isEven"
+                  checked={isEven}
+                  onChange={() => setIsEven((prev) => !prev)}
+                />
+              </div>
             )}
+          </>
+        )}
         <button type="submit">Create Class</button>
       </form>
     </div>

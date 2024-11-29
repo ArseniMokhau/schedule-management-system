@@ -35,6 +35,7 @@ function Map() {
     const updatedClassroomStatus = currentFloor.classrooms.map((classroom) => {
       const matchingClass = fetchedClasses.find(classData => classData.roomNumber === classroom.number);
       const teacherName = matchingClass ? matchingClass.teacherName : '';
+      const teacherTitle = matchingClass ? matchingClass.teacherTitle : '';
       const teacherId = matchingClass ? matchingClass.teacherId : '';
       const roomId = matchingClass ? matchingClass.roomId : '';
       const classTitle = matchingClass ? matchingClass.classTitle : '';
@@ -45,6 +46,7 @@ function Map() {
         ...classroom,
         status: activeClassrooms.includes(classroom.number) ? 'taken' : 'empty',
         teacherName,
+        teacherTitle,
         teacherId,
         roomId,
         classTitle,
@@ -66,6 +68,7 @@ function Map() {
         return {
           ...classroom,
           teacherName: '',  // Clear teacher name
+          teacherTitle: '', // Clear teacher title
           teacherId: '',    // Clear teacher ID
           roomId: '',       // Clear room ID
           classTitle: '',   // Clear class title
@@ -140,7 +143,7 @@ function Map() {
         </div>
         <div className="classroom-details">
           {classroom.teacherName ? (
-            <a href={`/teacher/${classroom.teacherId}`} className="teacher-name">
+            <a href={`/teacher/${classroom.teacherName}/${classroom.teacherTitle}/${classroom.teacherId}`} className="teacher-name">
               {classroom.teacherName || 'No teacher'}
             </a>
           ) : (
