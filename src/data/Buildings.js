@@ -1,6 +1,6 @@
 const buildings = [
     {
-      name: 'Building 1',
+      name: 'MS',
       floors: [
         {
           floorNumber: 1,

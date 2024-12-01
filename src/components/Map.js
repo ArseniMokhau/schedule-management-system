@@ -89,7 +89,18 @@ function Map() {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/classes/day/dayOfWeek?dayOfWeek=${dayOfWeek}`);
       if (!response.ok) {
         if (response.status === 404) {
-          setClassroomStatus([]);
+          const updatedClassroomStatus = currentFloor.classrooms.map(classroom => ({
+            ...classroom,
+            status: 'empty',
+            teacherName: '',
+            teacherTitle: '',
+            teacherId: '',
+            roomId: '',
+            classTitle: '',
+            recurrenceStartTime: '',
+            recurrenceEndTime: ''
+          }));
+          setClassroomStatus(updatedClassroomStatus);
           setErrorMessage(`No classes found for ${polandTime.toLocaleString('en-us', { weekday: 'long' })}.`);
           return;
         } else {
@@ -111,7 +122,7 @@ function Map() {
       console.error('Error fetching classroom data:', error);
       setErrorMessage('Failed to fetch classroom data. Please try again later.');
     }
-  }, [selectedDate]);
+  }, [selectedDate,currentFloor.classrooms]);
 
   // useEffect to refilter data whenever time changes
   useEffect(() => {
@@ -136,7 +147,7 @@ function Map() {
     return classroomStatus.map((classroom, index) => (
       <div key={index} className="classroom-container">
         <div className="classroom-header">
-          <a href={`/classroom/${classroom.number}/${classroom.roomId}`} className="classroom-number">
+          <a href={`/classroom/${classroom.campusName}/${classroom.number}/${classroom.roomId}`} className="classroom-number">
             {classroom.number}
           </a>
           <span className={`status-circle ${classroom.status === 'taken' ? 'taken' : 'empty'}`}></span>

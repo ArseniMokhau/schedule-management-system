@@ -21,7 +21,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/teacher/:name/:title/:id" element={<Teacher />} />
-          <Route path="/classroom/:number/:id" element={<Classroom />} />
+          <Route path="/classroom/:campus/:number/:id" element={<Classroom />} />
         </Routes>
       </Router>
     </UserProvider>

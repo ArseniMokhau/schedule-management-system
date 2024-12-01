@@ -6,6 +6,7 @@ const CreateClass = ({ onClassCreated }) => {
   const [roomNumber, setRoomNumber] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [campusName, setCampusName] = useState('');
   const [isOneTimeClass, setIsOneTimeClass] = useState(false);
   const [oneTimeClassFullDate, setOneTimeClassFullDate] = useState('');
   const [oneTimeClassStartTime, setOneTimeClassStartTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -22,59 +23,78 @@ const CreateClass = ({ onClassCreated }) => {
     building.floors.flatMap(floor => floor.classrooms)
   );
 
+  const campuses = buildings.map(building => building.name); 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const teacherId = localStorage.getItem('teacherId');
     if (!teacherId) {
-        alert('Teacher ID not found. Please log in again.');
-        return;
+      alert('Teacher ID not found. Please log in again.');
+      return;
     }
 
     // Construct the request body
     const classData = {
-        roomNumber,
-        title,
-        description,
-        isOneTimeClass,
-        oneTimeClassFullDate: isOneTimeClass ? oneTimeClassFullDate : null,
-        oneTimeClassStartTime: isOneTimeClass ? oneTimeClassStartTime : { hours: 0, minutes: 0, seconds: 0 },
-        oneTimeClassEndTime: isOneTimeClass ? oneTimeClassEndTime : { hours: 0, minutes: 0, seconds: 0 },
-        isEveryWeek: !isOneTimeClass ? isEveryWeek : false,
-        isEven: !isOneTimeClass && !isEveryWeek ? isEven : false,
-        recurrenceDay: !isOneTimeClass ? recurrenceDay : 0,
-        recurrenceStartTime: !isOneTimeClass ? recurrenceStartTime : { hours: 0, minutes: 0, seconds: 0 },
-        recurrenceEndTime: !isOneTimeClass ? recurrenceEndTime : { hours: 0, minutes: 0, seconds: 0 },
+      roomNumber,
+      title,
+      description,
+      campusName, // Include campus name
+      isOneTimeClass,
+      oneTimeClassFullDate: isOneTimeClass ? oneTimeClassFullDate : null,
+      oneTimeClassStartTime: isOneTimeClass ? oneTimeClassStartTime : { hours: 0, minutes: 0, seconds: 0 },
+      oneTimeClassEndTime: isOneTimeClass ? oneTimeClassEndTime : { hours: 0, minutes: 0, seconds: 0 },
+      isEveryWeek: !isOneTimeClass ? isEveryWeek : false,
+      isEven: !isOneTimeClass && !isEveryWeek ? isEven : false,
+      recurrenceDay: !isOneTimeClass ? recurrenceDay : 0,
+      recurrenceStartTime: !isOneTimeClass ? recurrenceStartTime : { hours: 0, minutes: 0, seconds: 0 },
+      recurrenceEndTime: !isOneTimeClass ? recurrenceEndTime : { hours: 0, minutes: 0, seconds: 0 },
     };
 
     try {
-        // Send the POST request to create the class
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/createClass?teacherId=${teacherId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(classData),
-        });
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/createClass?teacherId=${teacherId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(classData),
+      });
 
-        const result = await response.json();
-        if (response.ok) {
-            alert('Class created successfully!');
-            onClassCreated();
-        } else {
-            alert('Error creating class: ' + result.message);
-        }
+      const result = await response.json();
+      if (response.ok) {
+        alert('Class created successfully!');
+        onClassCreated();
+      } else {
+        alert('Error creating class: ' + result.message);
+      }
     } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while creating the class');
+      console.error('Error:', error);
+      alert('An error occurred while creating the class');
     }
-};
+  };
 
 
   return (
     <div className="create-class-container">
       <h2>Create New Class</h2>
       <form onSubmit={handleSubmit} className="create-class-form">
+        <div className="form-group">
+          <label htmlFor="campusName">Campus</label>
+          <select
+            id="campusName"
+            value={campusName}
+            onChange={(e) => setCampusName(e.target.value)}
+            required
+          >
+            <option value="">Select a campus</option>
+            {campuses.map((campus) => (
+              <option key={campus} value={campus}>
+                {campus}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="form-group">
           <label htmlFor="roomNumber">Room Number</label>
           <select
