@@ -41,6 +41,7 @@ function Map() {
       const classTitle = matchingClass ? matchingClass.classTitle : '';
       const recurrenceStartTime = matchingClass ? matchingClass.recurrenceStartTime : '';
       const recurrenceEndTime = matchingClass ? matchingClass.recurrenceEndTime : '';
+      const campusName = matchingClass ? matchingClass.campusName : '';
 
       return {
         ...classroom,
@@ -50,6 +51,7 @@ function Map() {
         teacherId,
         roomId,
         classTitle,
+        campusName,
         recurrenceStartTime,
         recurrenceEndTime
       };
@@ -72,6 +74,7 @@ function Map() {
           teacherId: '',    // Clear teacher ID
           roomId: '',       // Clear room ID
           classTitle: '',   // Clear class title
+          campusName: '',
           recurrenceStartTime: '',  // Clear recurrence start time
           recurrenceEndTime: ''     // Clear recurrence end time
         };
@@ -94,6 +97,7 @@ function Map() {
             status: 'empty',
             teacherName: '',
             teacherTitle: '',
+            campusName: '',
             teacherId: '',
             roomId: '',
             classTitle: '',

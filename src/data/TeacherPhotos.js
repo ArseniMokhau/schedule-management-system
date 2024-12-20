@@ -1,7 +1,8 @@
-import zielPhoto from '../resources/teacherPhotos/ziel.jpg';
+// import zielPhoto from '../resources/teacherPhotos/ziel.jpg';
+import defaultPhoto from '../resources/teacherPhotos/default-avatar-icon.jpg';
 
 export const TeacherPhotos = {
-    "Arseni": zielPhoto,
+    "Arseni": defaultPhoto,
     // Add more teacher names and photo links here
   };
   

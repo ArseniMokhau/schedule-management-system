@@ -1,6 +1,7 @@
 const buildings = [
     {
       name: 'MS',
+      fullName: 'Wydział Matematyki Stosowanej',
       floors: [
         {
           floorNumber: 1,
