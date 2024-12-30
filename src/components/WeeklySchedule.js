@@ -56,7 +56,7 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       const startDate = new Date(2024, 0, 1); // January 1, 2024
       const daysSinceStart = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
       const weekNumber = Math.floor(daysSinceStart / 7) + 1;
-      return weekNumber % 2 === 0 ? "even" : "odd"; // Return "even" or "odd"
+      return weekNumber % 2 === 0 ? "even" : "odd";
     };
   
     const currentWeekParity = calculateWeekParity(selectedWeek); // Determine parity of selected week
@@ -206,10 +206,9 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
         throw new Error(`Failed to update class: ${response.statusText}`);
       }
   
-      // Parse the response (e.g. { "message": "successfully." })
       const data = await response.json();
       if (data.message === "successfully.") {
-        // Update the status of the class (toggle between canceled and restored)
+        // Update the status of the class
         const updatedClasses = classes.map((classItem) =>
           classItem.classId === classId
             ? { ...classItem, isCanceled: !isCanceled }

@@ -11,9 +11,8 @@ function Map() {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date());
-  const [fetchedClasses, setFetchedClasses] = useState([]); // Store fetched class data
+  const [fetchedClasses, setFetchedClasses] = useState([]);
 
-  // Filter by time function, updated with fetchedClasses as a dependency
   const filterByTime = useCallback(() => {
     const polandTime = toZonedTime(new Date(selectedDate.setHours(selectedTime.getHours(), selectedTime.getMinutes())), 'Europe/Warsaw');
     const dayOfWeek = (polandTime.getDay() + 6) % 7;
@@ -63,20 +62,19 @@ function Map() {
     
   }, [currentFloor, selectedDate, selectedTime, fetchedClasses]);
 
-  // Function to clear data for inactive classrooms
   const clearInactiveClassrooms = (classrooms) => {
     return classrooms.map(classroom => {
       if (classroom.status === 'empty') {
         return {
           ...classroom,
-          teacherName: '',  // Clear teacher name
-          teacherTitle: '', // Clear teacher title
-          teacherId: '',    // Clear teacher ID
-          roomId: '',       // Clear room ID
-          classTitle: '',   // Clear class title
+          teacherName: '',
+          teacherTitle: '',
+          teacherId: '',
+          roomId: '',
+          classTitle: '',
           campusName: '',
-          recurrenceStartTime: '',  // Clear recurrence start time
-          recurrenceEndTime: ''     // Clear recurrence end time
+          recurrenceStartTime: '',
+          recurrenceEndTime: ''
         };
       }
       return classroom;
@@ -130,7 +128,7 @@ function Map() {
 
   // useEffect to refilter data whenever time changes
   useEffect(() => {
-    filterByTime(); // Filter data on time change or when fetched data updates
+    filterByTime();
   }, [filterByTime, fetchedClasses]);
 
   // Fetch the data only on the initial date load

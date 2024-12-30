@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import WeeklySchedule from '../components/WeeklySchedule';
 import { ScheduleType } from '../data/Enums';
-import campusData from '../data/CampusData'; // Import the campus data
+import campusData from '../data/CampusData';
 
 function Classroom() {
   const { campus, number, id } = useParams();

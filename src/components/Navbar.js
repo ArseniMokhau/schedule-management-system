@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useUser } from '../contexts/UserContext'; // Import the custom hook
+import { useUser } from '../contexts/UserContext';
 
 function Navbar() {
   const { isLoggedIn, setIsLoggedIn} = useUser();
 
   const handleLogout = () => {
-    // Clear user data from context and localStorage
     setIsLoggedIn(false);
   };
 

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import buildings from '../data/Buildings';
 
 const CreateClass = ({ onClassCreated }) => {
-  // State variables
   const [roomNumber, setRoomNumber] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -34,12 +33,11 @@ const CreateClass = ({ onClassCreated }) => {
       return;
     }
 
-    // Construct the request body
     const classData = {
       roomNumber,
       title,
       description,
-      campusName, // Include campus name
+      campusName,
       isOneTimeClass,
       oneTimeClassFullDate: isOneTimeClass ? oneTimeClassFullDate : null,
       oneTimeClassStartTime: isOneTimeClass ? oneTimeClassStartTime : { hours: 0, minutes: 0, seconds: 0 },

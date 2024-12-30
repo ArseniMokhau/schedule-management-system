@@ -53,14 +53,24 @@ const mockUserContext = {
 
 describe('WeeklySchedule Component', () => {
   beforeEach(() => {
-    // Mock the user context to simulate logged-in user
+    // Mock the user context
     useUser.mockReturnValue(mockUserContext);
   });
 
-  test('renders the weekly schedule and displays classes correctly', async () => {
-    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} classes={mockClasses} />);
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    // Wait for the classes to load and check if they appear
+  test('renders the weekly schedule and displays classes correctly', async () => {
+    // Mock the fetch response within the test
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValueOnce(mockClasses),
+    });
+
+    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} />);
+
+    // Wait for classes to be rendered
     await waitFor(() => {
       expect(screen.getByText('Math 101')).toBeInTheDocument();
       expect(screen.getByText('History 101')).toBeInTheDocument();
@@ -69,19 +79,18 @@ describe('WeeklySchedule Component', () => {
     });
   });
 
-  test('handles no classes scenario', async () => {
-    const emptyClasses = [];
+  test('handles error when fetching classes fails', async () => {
+    // Mock the fetch to simulate an error
+    global.fetch = jest.fn().mockRejectedValueOnce(new Error('Failed to fetch data'));
 
-    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} classes={emptyClasses} />);
+    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} />);
 
-    // Wait for the empty schedule message
-    await waitFor(() => {
-      expect(screen.getByText(/No classes/i)).toBeInTheDocument();
-    });
+    // Wait for the error message to appear
+    await waitFor(() => expect(screen.getByText(/Failed to load class data/i)).toBeInTheDocument());
   });
 
   test('navigates between weeks', async () => {
-    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} classes={mockClasses} />);
+    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} />);
 
     // Check initial week
     expect(screen.getByText(/Dec 15 - Dec 21/i)).toBeInTheDocument();
@@ -102,7 +111,7 @@ describe('WeeklySchedule Component', () => {
   });
 
   test('cancels a one-time class', async () => {
-    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} classes={mockClasses} />);
+    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} />);
 
     // Wait for classes to load
     await waitFor(() => expect(screen.getByText('Math 101')).toBeInTheDocument());
@@ -111,12 +120,12 @@ describe('WeeklySchedule Component', () => {
     const cancelButton = screen.getByText(/Cancel Meeting/i);
     fireEvent.click(cancelButton);
 
-    // Check if the cancellation action was triggered (simulating state change)
-    expect(screen.getByText(/Class Canceled/i)).toBeInTheDocument(); // You can check the result of the cancellation in UI
+    // Check if the cancellation UI behavior works (you don't check `fetch`, but ensure UI updates)
+    expect(screen.getByText('Canceled')).toBeInTheDocument();
   });
 
   test('deletes a class', async () => {
-    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} classes={mockClasses} />);
+    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} />);
 
     // Wait for classes to load
     await waitFor(() => expect(screen.getByText('Math 101')).toBeInTheDocument());
@@ -125,9 +134,20 @@ describe('WeeklySchedule Component', () => {
     const deleteButton = screen.getByText(/Delete Meeting/i);
     fireEvent.click(deleteButton);
 
-    // Check if the class is removed from the schedule (you can check UI updates here)
-    await waitFor(() => {
-      expect(screen.queryByText('Math 101')).not.toBeInTheDocument();
+    // Check if the UI reflects the deletion (e.g., class no longer in the list)
+    expect(screen.queryByText('Math 101')).not.toBeInTheDocument();
+  });
+
+  test('displays no classes message when there are no classes for a day', async () => {
+    // Mocking empty classes
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValueOnce([]),
     });
+
+    render(<WeeklySchedule id="123" scheduleType={ScheduleType.TEACHER} refreshTrigger={0} />);
+
+    // Wait for the empty schedule message
+    await waitFor(() => expect(screen.getByText(/No classes/i)).toBeInTheDocument());
   });
 });
