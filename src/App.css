@@ -192,6 +192,17 @@ h2 {
   font-size: 14px;
 }
 
+.canceled-notice {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;  /* Or any color you prefer */
+}
+
+.notice {
+  font-weight: bold;
+  color: red;  /* Highlight canceled status */
+}
+
 .login-register-form {
   background: #fff;
   padding: 20px;
