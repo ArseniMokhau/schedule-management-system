@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/sms/static/css/main.d9125a40.css",
+    "main.js": "/sms/static/js/main.d189c122.js",
+    "static/js/688.9d04b067.chunk.js": "/sms/static/js/688.9d04b067.chunk.js",
+    "static/js/390.9c171f26.chunk.js": "/sms/static/js/390.9c171f26.chunk.js",
+    "static/js/66.5c1d320a.chunk.js": "/sms/static/js/66.5c1d320a.chunk.js",
+    "static/js/662.f3b79585.chunk.js": "/sms/static/js/662.f3b79585.chunk.js",
+    "static/js/380.e79ff50a.chunk.js": "/sms/static/js/380.e79ff50a.chunk.js",
+    "static/js/180.3b8e8d95.chunk.js": "/sms/static/js/180.3b8e8d95.chunk.js",
+    "static/js/453.ae2939c6.chunk.js": "/sms/static/js/453.ae2939c6.chunk.js",
+    "static/js/329.cb9f8d1e.chunk.js": "/sms/static/js/329.cb9f8d1e.chunk.js",
+    "static/js/645.64a95a31.chunk.js": "/sms/static/js/645.64a95a31.chunk.js",
+    "static/media/wydzial-rms-slide.jpg": "/sms/static/media/wydzial-rms-slide.f401748cc346648833d1.jpg",
+    "static/media/qr.png": "/sms/static/media/qr.a3e5c59d148691b73a45.png",
+    "index.html": "/sms/index.html",
+    "main.d9125a40.css.map": "/sms/static/css/main.d9125a40.css.map",
+    "main.d189c122.js.map": "/sms/static/js/main.d189c122.js.map",
+    "688.9d04b067.chunk.js.map": "/sms/static/js/688.9d04b067.chunk.js.map",
+    "390.9c171f26.chunk.js.map": "/sms/static/js/390.9c171f26.chunk.js.map",
+    "66.5c1d320a.chunk.js.map": "/sms/static/js/66.5c1d320a.chunk.js.map",
+    "662.f3b79585.chunk.js.map": "/sms/static/js/662.f3b79585.chunk.js.map",
+    "380.e79ff50a.chunk.js.map": "/sms/static/js/380.e79ff50a.chunk.js.map",
+    "180.3b8e8d95.chunk.js.map": "/sms/static/js/180.3b8e8d95.chunk.js.map",
+    "453.ae2939c6.chunk.js.map": "/sms/static/js/453.ae2939c6.chunk.js.map",
+    "329.cb9f8d1e.chunk.js.map": "/sms/static/js/329.cb9f8d1e.chunk.js.map",
+    "645.64a95a31.chunk.js.map": "/sms/static/js/645.64a95a31.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d9125a40.css",
+    "static/js/main.d189c122.js"
+  ]
+}
