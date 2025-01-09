@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
 
-const CreateClass = ({ onClassCreated }) => {
+export const EditClass = ({ classId, onClassUpdated, onClose }) => {
   const { isLoggedIn, teacherId, token } = useUser();
+
   const [roomNumber, setRoomNumber] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -19,7 +20,6 @@ const CreateClass = ({ onClassCreated }) => {
   const [recurrenceEndTime, setRecurrenceEndTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   const [classrooms, setClassrooms] = useState([]); // Store the fetched classrooms
-  const [campuses] = useState(['MS']); // List of campuses (in this case, you can populate this if needed)
 
   useEffect(() => {
     // Fetch classrooms from the API
@@ -29,9 +29,7 @@ const CreateClass = ({ onClassCreated }) => {
         const data = await response.json();
         if (response.ok) {
           // Sort classrooms based on room number (numerically)
-          const sortedClassrooms = data.sort((a, b) => {
-            return a.RoomNumber - b.RoomNumber;
-          });
+          const sortedClassrooms = data.sort((a, b) => a.RoomNumber - b.RoomNumber);
           setClassrooms(sortedClassrooms); // Update the classrooms state with sorted rooms
         } else {
           console.error('Failed to fetch classrooms:', data.message);
@@ -43,6 +41,41 @@ const CreateClass = ({ onClassCreated }) => {
 
     fetchClassrooms();
   }, []); // Only run once when the component mounts
+
+  useEffect(() => {
+    // Fetch class data to populate the form
+    const fetchClassData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/Main/getClass/${classId}?teacherId=${teacherId}&teacherToken=${token}`
+        );
+        const data = await response.json();
+        if (response.ok && data) {
+          setRoomNumber(data.roomNumber);
+          setTitle(data.title);
+          setDescription(data.description);
+          setCampusName(data.campusName);
+          setIsOneTimeClass(data.isOneTimeClass);
+          setOneTimeClassFullDate(data.oneTimeClassFullDate);
+          setOneTimeClassStartTime(data.oneTimeClassStartTime);
+          setOneTimeClassEndTime(data.oneTimeClassEndTime);
+          setIsEveryWeek(data.isEveryWeek);
+          setIsEven(data.isEven);
+          setRecurrenceDay(data.recurrenceDay);
+          setRecurrenceStartTime(data.recurrenceStartTime);
+          setRecurrenceEndTime(data.recurrenceEndTime);
+        } else {
+          console.error('Failed to fetch class data');
+        }
+      } catch (error) {
+        console.error('Error fetching class data:', error);
+      }
+    };
+
+    if (classId) {
+      fetchClassData();
+    }
+  }, [classId, teacherId, token]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -70,9 +103,9 @@ const CreateClass = ({ onClassCreated }) => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/Main/createClass?teacherId=${teacherId}&teacherToken=${token}`,
+        `${process.env.REACT_APP_API_URL}/Main/updateClass/${classId}?teacherId=${teacherId}&teacherToken=${token}`,
         {
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -82,22 +115,24 @@ const CreateClass = ({ onClassCreated }) => {
 
       const result = await response.json();
       if (response.ok) {
-        alert('Class created successfully!');
-        onClassCreated();
+        alert('Class updated successfully!');
+        onClassUpdated();
+        onClose(); // Close the pop-up/modal after successful update
       } else {
-        alert('Error creating class: ' + result.message);
+        alert('Error updating class: ' + result.message);
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while creating the class');
+      alert('An error occurred while updating the class');
     }
   };
 
   return (
-    <div className="create-class-container">
-      <h2>Create New Class</h2>
-      <form onSubmit={handleSubmit} className="create-class-form">
-        <div className="form-group">
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <h2>Edit Class</h2>
+        <form onSubmit={handleSubmit} className="edit-class-form">
+          <div className="form-group">
           <label htmlFor="campusName">Campus</label>
           <select
             id="campusName"
@@ -106,11 +141,7 @@ const CreateClass = ({ onClassCreated }) => {
             required
           >
             <option value="">Select a campus</option>
-            {campuses.map((campus) => (
-              <option key={campus} value={campus}>
-                {campus}
-              </option>
-            ))}
+            <option value="MS">MS</option>
           </select>
         </div>
 
@@ -256,24 +287,16 @@ const CreateClass = ({ onClassCreated }) => {
                 required
               />
             </div>
-
-            {!isEveryWeek && (
-              <div className="form-group">
-                <label htmlFor="isEven">Even Weeks</label>
-                <input
-                  type="checkbox"
-                  id="isEven"
-                  checked={isEven}
-                  onChange={() => setIsEven((prev) => !prev)}
-                />
-              </div>
-            )}
           </>
         )}
-        <button type="submit">Create Class</button>
-      </form>
+
+        <button type="submit">Update Class</button>
+          <button type="submit">Update Class</button>
+        </form>
+        <button onClick={onClose}>Cancel</button>
+      </div>
     </div>
   );
 };
 
-export default CreateClass;
+export default EditClass;

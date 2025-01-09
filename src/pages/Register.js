@@ -7,41 +7,53 @@ function Register() {
   const [password, setPassword] = useState('');
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
-  const { setIsLoggedIn, setTeacherId } = useUser();
+  const { setIsLoggedIn, setTeacherId, setToken, setExpirationDate } = useUser();
   const navigate = useNavigate();
 
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    // Register the user
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, title }),
-    });
-
-    if (response.ok) {
-      // On successful registration, automatically log in
-      const loginResponse = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
+    try {
+      // Register the user
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, title }),
       });
 
-      const loginData = await loginResponse.json();
+      const data = await response.json();
 
-      if (loginResponse.ok) {
-        // Update context and localStorage
-        setIsLoggedIn(true);
-        setTeacherId(loginData.teacherId);
+      if (response.ok) {
+        // On successful registration, automatically log in
+        const loginResponse = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
 
-        // Redirect to home page after successful login
-        navigate('/');
+        const loginData = await loginResponse.json();
+
+        if (loginResponse.ok) {
+          // Update context and localStorage
+          setIsLoggedIn(true);
+          setTeacherId(loginData.teacherId);
+          setToken(loginData.token);
+
+          // Parse and set expiration date
+          const expirationDate = new Date(loginData.expiration.split('/').reverse().join('-')).toISOString();
+          setExpirationDate(expirationDate);
+
+          // Redirect to home page after successful login
+          navigate('/');
+        } else {
+          setError(loginData.message || 'Login failed');
+        }
       } else {
-        setError('Login failed');
+        // Display server-provided error message
+        setError(data.message || 'Registration failed');
       }
-    } else {
-      setError('Registration failed');
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
@@ -76,7 +88,7 @@ function Register() {
             required
           />
         </div>
-        {error && <p>{error}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Register</button>
       </form>
     </div>

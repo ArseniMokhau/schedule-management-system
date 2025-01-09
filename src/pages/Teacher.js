@@ -14,7 +14,7 @@ function Teacher() {
     <div className="teacher-page">
       <div className="teacher-info">
         <img 
-          src={TeacherPhotos[name] || '/placeholder.jpg'} 
+          src={TeacherPhotos[name] || TeacherPhotos['Default']} 
           alt={name} 
           className="teacher-photo" 
         />

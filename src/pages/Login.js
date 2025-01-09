@@ -6,30 +6,39 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { setIsLoggedIn, setTeacherId } = useUser();
+  const { setIsLoggedIn, setTeacherId, setToken, setExpirationDate } = useUser();
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Log the user in
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      // Send login request
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      // Update context and localStorage
-      setIsLoggedIn(true);
-      setTeacherId(data.teacherId);
+      if (response.ok) {
+        // Update context and localStorage with token and expiration date
+        setIsLoggedIn(true);
+        setTeacherId(data.teacherId);
+        setToken(data.token);
 
-      // Redirect to home page after successful login
-      navigate('/');
-    } else {
-      setError('Login failed');
+        // Parse and set expiration date in the correct format
+        const expirationDate = new Date(data.expiration.split('/').reverse().join('-')).toISOString();
+        setExpirationDate(expirationDate);
+
+        // Redirect to home page after successful login
+        navigate('/');
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
@@ -55,7 +64,7 @@ function Login() {
             required
           />
         </div>
-        {error && <p>{error}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>

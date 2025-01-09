@@ -48,6 +48,19 @@ function Classroom() {
           />
         </div>
       </div>
+      {/* MapHelper QR Code Section */}
+      <div className="classroom-page-maphelper-section">
+        <h3 className="classroom-page-maphelper-title">Get MapHelper App</h3>
+        <a href="https://arsenimokhau.github.io/Map-Helper/" target="_blank" rel="noopener noreferrer">
+          <img
+            src={require('../resources/maphelper/qr.png')}
+            alt="QR Code for MapHelper"
+            className="classroom-page-maphelper-qr"
+            style={{ width: '200px', height: '200px' }} // Adjust size as needed
+          />
+        </a>
+        <p>Scan the QR code or click it to open the MapHelper application.</p>
+      </div>
     </div>
   );
 }
