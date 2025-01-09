@@ -1,0 +1,86 @@
+/* Home Page Layout */
+.home-page {
+    background-color: #eef2f7;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .content-container {
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+  }
+  
+  .map-container {
+    flex: 3; /* Map takes most of the space */
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .teacher-list-container {
+    flex: 1; /* Teacher list takes less space */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out; /* For smooth expand/collapse animation */
+  }
+  
+  .teacher-list-container.collapsed {
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0;
+  }
+  
+  .teacher-list-container.expanded {
+    width: 300px; /* Specify the width when expanded */
+    opacity: 1;
+    visibility: visible;
+    padding: 20px;
+  }
+  
+  .toggle-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .teacher-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .teacher-button {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    margin: 5px 0;
+    text-align: left;
+  }
+  
+  .teacher-button a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  .teacher-button:hover {
+    background: #007bff;
+    color: white;
+    transform: scale(1.05);
+  }
+  

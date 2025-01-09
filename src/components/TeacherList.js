@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/TeacherList.css';
 
 function TeacherList() {
   const [teachers, setTeachers] = useState([]);
@@ -38,29 +39,29 @@ function TeacherList() {
       >
         {isExpanded ? 'Hide Teacher List' : 'Show Teacher List'}
       </button>
-      {isExpanded && (
-        <div className="teacher-list">
-          {teachers.length === 0 ? (
-            <div>Loading...</div>
-          ) : (
-            <div className="scrollable-teacher-list">
-              {teachers.map((teacher) => (
-                <button
-                  key={teacher.TeacherId}
-                  className="teacher-button"
-                  title={`${teacher.TeacherName} - ${teacher.TeacherTitle}`}
+      <div
+        className={`teacher-list ${isExpanded ? 'expanded' : ''}`}
+      >
+        {teachers.length === 0 ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="scrollable-teacher-list">
+            {teachers.map((teacher) => (
+              <button
+                key={teacher.TeacherId}
+                className="teacher-button"
+                title={`${teacher.TeacherName} - ${teacher.TeacherTitle}`}
+              >
+                <Link
+                  to={`/teacher/${teacher.TeacherName}/${teacher.TeacherTitle}/${teacher.TeacherId}`}
                 >
-                  <Link
-                    to={`/teacher/${teacher.TeacherName}/${teacher.TeacherTitle}/${teacher.TeacherId}`}
-                  >
-                    {teacher.TeacherName}
-                  </Link>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+                  {teacher.TeacherName}
+                </Link>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { format, startOfWeek, endOfWeek, parseISO, isWithinInterval, addWeeks } from 'date-fns';
 import { ScheduleType } from '../data/Enums';
 import { useUser } from '../contexts/UserContext';
+import Spinner from './Spinner';
 
 function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
+  const [loading, setLoading] = useState(true);
   const [classes, setClasses] = useState([]);
   const { isLoggedIn, teacherId, token} = useUser();
   const [errorMessage, setErrorMessage] = useState(null);
@@ -28,6 +30,7 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
     }
 
     try {
+      setLoading(true);
       const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error(`Error fetching classes: ${response.statusText}`);
@@ -35,9 +38,11 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       const data = await response.json();
       setClasses(data);
       setErrorMessage(null);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching classes:', error);
       setErrorMessage('Failed to load class data. Please try again later.');
+      setLoading(false);
     }
   }, [id, scheduleType]);
 
@@ -115,8 +120,6 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
   
           const isoDate = convertToISODate(oneTimeClass.oneTimeClassFullDate); // Convert to ISO format
           const classDate = parseISO(isoDate);
-          console.log(isoDate); // Check the isoDate
-          console.log(classDate); // Check the classDate
   
           if (isWithinInterval(classDate, { start: weekStart, end: weekEnd })) {
             const dayIndex = remapDayIndex(classDate.getDay()); // Apply remap for one-time classes
@@ -141,9 +144,6 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
     weeklySchedule.forEach((dayClasses) => {
       dayClasses.sort((a, b) => parseTime(a.recurrenceStartTime) - parseTime(b.recurrenceStartTime));
     });
-  
-    console.log(classes);
-    console.log(weeklySchedule);
   
     return weeklySchedule;
   };   
@@ -193,32 +193,52 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
   }
 
   const handleCancelMeeting = async (classData) => {
-    const { classId, classType, isCanceled } = classData;
+    const { classId, classType, isCanceled, recurrenceDay } = classData;
     const endpointBase = `${process.env.REACT_APP_API_URL}/Main`;
     let endpoint = '';
     let method = 'POST';
     let requestBody = null;
-  
+
+    // Calculate the target date based on the selected week and recurrenceDay
+    const calculateRecurrenceDate = () => {
+      const targetDate = new Date(selectedWeek); // Start with the selected week date
+      const currentDay = targetDate.getDay(); // Get the day of the week for the selected date
+      const targetDay = recurrenceDay === 0 ? 7 : recurrenceDay; // If recurrenceDay is 0 (Sunday), treat it as 7 (Sunday in JS)
+
+      // Adjust the targetDate to the next occurrence of the recurrenceDay
+      const dayDifference = targetDay - currentDay;
+      targetDate.setDate(targetDate.getDate() + dayDifference);
+
+      // Ensure the target date is within the correct week (handling edge cases where the recurrence would fall outside)
+      if (dayDifference <= 0) {
+        targetDate.setDate(targetDate.getDate()); // Move to the next week if the recurrence day is already past
+      }
+
+      return targetDate;
+    };
+    
     try {
       if (classType === 'One-Time') {
         // Cancel or restore one-time class
         endpoint = `${endpointBase}/cancelOrRestoreClassOneTime/${classId}?teacherId=${teacherId}&teacherToken=${token}`;
         requestBody = null;
       } 
-      /*
       else if (classType === 'Recurring') {
         // Cancel or restore recurring class
+        const recurrenceDate = calculateRecurrenceDate();
+        
         if (isCanceled) {
-          endpoint = `${endpointBase}/restoreRecurringClass/${classId}`;
-          requestBody = { restoreDate: classDate.toISOString() };
+          // Restore recurring class if it is already canceled
+          endpoint = `${endpointBase}/restoreRecurringClass/${classId}?teacherId=${teacherId}&teacherToken=${token}`;
+          requestBody = format(recurrenceDate, 'yyyy-MM-dd');
         } else {
-          endpoint = `${endpointBase}/cancelRecurringClass/${classId}`;
-          requestBody = { cancelDate: classDate.toISOString() };
+          // Cancel recurring class
+          endpoint = `${endpointBase}/cancelRecurringClass/${classId}?teacherId=${teacherId}&teacherToken=${token}`;
+          requestBody = format(recurrenceDate, 'yyyy-MM-dd');
         }
       } else {
         throw new Error('Unknown class type');
       }
-      */
   
       const response = await fetch(endpoint, {
         method,
@@ -233,14 +253,8 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       }
   
       const data = await response.json();
-      if (data.message === "successfully.") {
+      if (data.message.includes("successfully")) {
         // Update the status of the class
-        const updatedClasses = classes.map((classItem) =>
-          classItem.classId === classId
-            ? { ...classItem, isCanceled: !isCanceled }
-            : classItem
-        );
-        setClasses(updatedClasses); // Update state with the new status
   
         alert(`Class ${isCanceled ? 'restored' : 'canceled'} successfully.`);
       } else {
@@ -251,6 +265,10 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       alert('An error occurred while updating the class. Please try again.');
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="weekly-schedule-container">
@@ -291,7 +309,7 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
                     {classData.teacherName}
                   </Link>
                   <div className="class-card-buttons">
-                    {isLoggedIn && teacherId === classData.teacherId && classData.classType === 'One-Time' && (
+                    {isLoggedIn && teacherId === classData.teacherId && (
                       <button
                         className="cancel-meeting-button"
                         onClick={() => handleCancelMeeting(classData)}>

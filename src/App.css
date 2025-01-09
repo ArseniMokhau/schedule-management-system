@@ -900,3 +900,418 @@ body {
   flex: 0 0 auto; /* Prevent it from growing */
   max-width: 300px; /* Explicit horizontal limit */
 }
+
+/* General Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f4f8;
+  overflow-x: hidden;
+}
+
+/* Smooth Transition for All Elements */
+*, *::before, *::after {
+  transition: all 0.3s ease;
+}
+
+/* Navbar */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem; /* Reduced vertical padding */
+  background-color: #2c3e50;
+  color: white;
+}
+
+nav h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  position: relative; /* Required for animated underline */
+  padding-bottom: 2px; /* Add padding to avoid overlap with text */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+nav ul li a:hover {
+  text-decoration: none; /* Remove default underline */
+  color: #3498db; /* Highlight color when hovered */
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3498db;
+  transition: width 0.3s ease, left 0.3s ease; /* Animation effect */
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Floor Buttons */
+.floor-selector button {
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #3498db; /* New color */
+  color: white; /* Text color for better visibility */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.floor-selector button:hover {
+  background-color: #2980b9; /* Darker shade on hover */
+}
+
+/* Home Page */
+.home-page {
+  padding: 40px 2rem;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.floor-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* Classroom Buttons */
+.classrooms-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.classroom-button {
+  padding: 12px 18px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.classroom-button:hover {
+  background-color: #3498db;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Classroom Details */
+.classroom-container {
+  width: 220px;
+  height: 260px;
+  margin: 15px;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.classroom-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.classroom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.status-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: gray;
+}
+
+.status-circle.taken {
+  background-color: #2ecc71;
+}
+
+.status-circle.empty {
+  background-color: #e74c3c;
+}
+
+.classroom-details {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.class-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.teacher-name {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Classroom Time */
+.classroom-time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  letter-spacing: 0.5px;
+}
+
+/* Date and Time Selector */
+.date-time-selector {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Styling the Labels */
+.date-time-selector label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px; /* Add some space between label and input */
+  display: block; /* Ensure label takes up full width */
+}
+
+/* Styling the Date Picker */
+.date-time-selector input[type="date"] {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 2px solid #3498db;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+  margin-top: 4px; /* Add margin to separate from label */
+  margin-left: 10px;
+}
+
+.date-time-selector input[type="date"]:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+/* Time Slider */
+.time-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px; /* Space between label and slider */
+}
+
+/* Time Slider Range Input */
+.time-slider input[type="range"] {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 5px;
+  background: #3498db;
+  transition: background 0.3s ease;
+}
+
+.time-slider input[type="range"]:hover {
+  background: #2980b9;
+}
+
+.time-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #3498db;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.time-slider input[type="range"]:hover::-webkit-slider-thumb {
+  background-color: #2980b9;
+  transform: scale(1.1);
+}
+
+.time-slider input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #3498db;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.time-slider input[type="range"]:hover::-moz-range-thumb {
+  background-color: #2980b9;
+  transform: scale(1.1);
+}
+
+/* Time Display */
+.time-slider span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-left: 10px; /* Space between slider and time text */
+}
+
+/* Button Styling */
+button {
+  padding: 12px 16px;
+  background-color: #3498db;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Forms */
+.login-register-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-register-form input[type="text"],
+.login-register-form input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border 0.3s ease;
+}
+
+.login-register-form input[type="text"]:focus,
+.login-register-form input[type="password"]:focus {
+  border-color: #3498db;
+}
+
+.login-register-form button {
+  width: 100%;
+  background-color: #3498db;
+}
+
+.login-register-form button:hover {
+  background-color: #2980b9;
+}
+
+.login-register-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+}
+
+.create-class-form .form-group input[type="time"],
+.create-class-form .form-group select {
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.create-class-form .form-group input[type="time"]:focus,
+.create-class-form .form-group select:focus {
+  border-color: #3498db;
+}
+
+/* Animation on form submission */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.login-register-form {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Flexbox for the container of the buttons */
+.class-card-buttons {
+  display: flex;
+  gap: 10px; /* Space between the buttons */
+  justify-content: flex-start; /* Align buttons to the left */
+  align-items: center; /* Vertically center buttons */
+  width: 100%; /* Ensure the container takes up the full width */
+}
+
+/* Style for the individual buttons */
+.cancel-meeting-button,
+.delete-meeting-button {
+  flex-grow: 1; /* Make buttons grow to fill available space */
+  padding: 10px 15px; /* Add padding for consistent button size */
+  font-size: 14px; /* Adjust font size */
+  border: none;
+  border-radius: 6px;
+  background-color: #3498db; /* Default color */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center; /* Center text inside the button */
+  min-width: 120px; /* Minimum width to maintain visibility */
+}
+
+.cancel-meeting-button:hover,
+.delete-meeting-button:hover {
+  background-color: #2980b9; /* Darker shade when hovered */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,55 @@
+.teacher-list-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .toggle-button {
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Teacher list animation */
+  .teacher-list {
+    overflow: hidden;
+    max-height: 0; /* Initially collapsed */
+    visibility: hidden; /* Completely hide the list */
+    transition: max-height 0.5s ease-out, visibility 0s 0.1s; /* Add delay to visibility */
+  }
+  
+  .teacher-list.expanded {
+    max-height: 500px; /* Adjust this value as needed */
+    visibility: visible; /* Make the list visible when expanded */
+    transition: max-height 0.5s ease-out, visibility 0s; /* Make visibility change instantly */
+  }
+  
+  .scrollable-teacher-list {
+    max-height: 400px; /* Optional: restrict the height for scrolling */
+    overflow-y: auto;
+  }
+  
+  .teacher-button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+  }
+  
+  .teacher-button a {
+    color: #2c3e50;
+    text-decoration: none;
+  }
+  
+  .teacher-button:hover {
+    background-color: #bdc3c7;
+  }
+  

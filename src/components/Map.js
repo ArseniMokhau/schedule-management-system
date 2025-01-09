@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { toZonedTime } from 'date-fns-tz';
 import { parseISO, isWithinInterval, format, setMinutes, setHours } from 'date-fns';
+import Spinner from './Spinner';
 
 function Map() {
+  const [loading, setLoading] = useState(true);
   const [currentBuilding, setCurrentBuilding] = useState(null);
   const [currentFloor, setCurrentFloor] = useState(null);
   const [classroomStatus, setClassroomStatus] = useState([]);
@@ -13,6 +15,7 @@ function Map() {
   const [fetchedClasses, setFetchedClasses] = useState([]);
 
   const fetchRoomData = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/room/all`);
       if (!response.ok) {
@@ -49,13 +52,16 @@ function Map() {
       setCurrentFloor(building.floors[0]); 
       setClassroomStatus(building.floors[0]?.classrooms || []);
       setErrorMessage(null);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching room data:', error);
       setErrorMessage('Failed to fetch room data. Please try again later.');
+      setLoading(false);
     }
   }, []);
 
   const fetchClassData = useCallback(async () => {
+    setLoading(true);
     try {
       // Fetch recurring classes
       const polandTime = toZonedTime(selectedDate, 'Europe/Warsaw');
@@ -83,9 +89,11 @@ function Map() {
   
       setFetchedClasses(combinedClasses);
       setErrorMessage(null);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching class data:', error);
       setErrorMessage('Failed to fetch class data. Please try again later.');
+      setLoading(false);
     }
   }, [selectedDate]);  
 
@@ -305,6 +313,10 @@ function Map() {
   const timeToMinutes = (time) => {
     return time.getHours() * 60 + time.getMinutes();
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="map-container">
