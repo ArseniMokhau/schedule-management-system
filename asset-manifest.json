@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/schedule-management-system/static/css/main.d9125a40.css",
-    "main.js": "/schedule-management-system/static/js/main.664f5112.js",
+    "main.js": "/schedule-management-system/static/js/main.dab79338.js",
     "static/js/688.b6f0489a.chunk.js": "/schedule-management-system/static/js/688.b6f0489a.chunk.js",
-    "static/js/390.e753df03.chunk.js": "/schedule-management-system/static/js/390.e753df03.chunk.js",
+    "static/js/390.79eb17fd.chunk.js": "/schedule-management-system/static/js/390.79eb17fd.chunk.js",
     "static/js/66.10a8c132.chunk.js": "/schedule-management-system/static/js/66.10a8c132.chunk.js",
     "static/js/662.4ec60401.chunk.js": "/schedule-management-system/static/js/662.4ec60401.chunk.js",
     "static/js/380.aa1c4327.chunk.js": "/schedule-management-system/static/js/380.aa1c4327.chunk.js",
@@ -11,15 +11,15 @@
     "static/js/453.ae2939c6.chunk.js": "/schedule-management-system/static/js/453.ae2939c6.chunk.js",
     "static/js/47.eec36ca1.chunk.js": "/schedule-management-system/static/js/47.eec36ca1.chunk.js",
     "static/js/39.109f3012.chunk.js": "/schedule-management-system/static/js/39.109f3012.chunk.js",
-    "static/js/93.8115880a.chunk.js": "/schedule-management-system/static/js/93.8115880a.chunk.js",
     "static/js/307.3d965164.chunk.js": "/schedule-management-system/static/js/307.3d965164.chunk.js",
+    "static/js/93.8115880a.chunk.js": "/schedule-management-system/static/js/93.8115880a.chunk.js",
     "static/media/wydzial-rms-slide.jpg": "/schedule-management-system/static/media/wydzial-rms-slide.f401748cc346648833d1.jpg",
     "static/media/qr.png": "/schedule-management-system/static/media/qr.a3e5c59d148691b73a45.png",
     "index.html": "/schedule-management-system/index.html",
     "main.d9125a40.css.map": "/schedule-management-system/static/css/main.d9125a40.css.map",
-    "main.664f5112.js.map": "/schedule-management-system/static/js/main.664f5112.js.map",
+    "main.dab79338.js.map": "/schedule-management-system/static/js/main.dab79338.js.map",
     "688.b6f0489a.chunk.js.map": "/schedule-management-system/static/js/688.b6f0489a.chunk.js.map",
-    "390.e753df03.chunk.js.map": "/schedule-management-system/static/js/390.e753df03.chunk.js.map",
+    "390.79eb17fd.chunk.js.map": "/schedule-management-system/static/js/390.79eb17fd.chunk.js.map",
     "66.10a8c132.chunk.js.map": "/schedule-management-system/static/js/66.10a8c132.chunk.js.map",
     "662.4ec60401.chunk.js.map": "/schedule-management-system/static/js/662.4ec60401.chunk.js.map",
     "380.aa1c4327.chunk.js.map": "/schedule-management-system/static/js/380.aa1c4327.chunk.js.map",
@@ -27,11 +27,11 @@
     "453.ae2939c6.chunk.js.map": "/schedule-management-system/static/js/453.ae2939c6.chunk.js.map",
     "47.eec36ca1.chunk.js.map": "/schedule-management-system/static/js/47.eec36ca1.chunk.js.map",
     "39.109f3012.chunk.js.map": "/schedule-management-system/static/js/39.109f3012.chunk.js.map",
-    "93.8115880a.chunk.js.map": "/schedule-management-system/static/js/93.8115880a.chunk.js.map",
-    "307.3d965164.chunk.js.map": "/schedule-management-system/static/js/307.3d965164.chunk.js.map"
+    "307.3d965164.chunk.js.map": "/schedule-management-system/static/js/307.3d965164.chunk.js.map",
+    "93.8115880a.chunk.js.map": "/schedule-management-system/static/js/93.8115880a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d9125a40.css",
-    "static/js/main.664f5112.js"
+    "static/js/main.dab79338.js"
   ]
 }
