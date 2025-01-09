@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { parse } from 'date-fns';
 import { useUser } from '../contexts/UserContext';
 
 function Register() {
@@ -12,7 +13,7 @@ function Register() {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-
+  
     try {
       // Register the user
       const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/register`, {
@@ -20,42 +21,77 @@ function Register() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, title }),
       });
-
-      const data = await response.json();
-
+  
+      // Determine if response is JSON or plain text
+      const contentType = response.headers.get("Content-Type");
+      let data;
+  
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json(); // Parse JSON response
+      } else {
+        data = await response.text(); // Parse plain text response
+      }
+  
       if (response.ok) {
-        // On successful registration, automatically log in
-        const loginResponse = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password }),
-        });
-
-        const loginData = await loginResponse.json();
-
-        if (loginResponse.ok) {
-          // Update context and localStorage
-          setIsLoggedIn(true);
-          setTeacherId(loginData.teacherId);
-          setToken(loginData.token);
-
-          // Parse and set expiration date
-          const expirationDate = new Date(loginData.expiration.split('/').reverse().join('-')).toISOString();
-          setExpirationDate(expirationDate);
-
-          // Redirect to home page after successful login
-          navigate('/');
+        if (typeof data === "string" && data === "User registered successfully") {
+          // Automatically log in after successful registration
+          const loginResponse = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+          });
+  
+          const loginData = await loginResponse.json();
+  
+          if (loginResponse.ok) {
+            // Update context and localStorage
+            setIsLoggedIn(true);
+            setTeacherId(loginData.teacherId);
+            setToken(loginData.token);
+          
+            // Check if expiration exists and is valid
+            if (loginData.expiration) {
+              try {
+                const expirationDate = parse(loginData.expiration, 'M/d/yyyy', new Date()).toISOString();
+                setExpirationDate(expirationDate);
+              } catch (parseError) {
+                console.error('Date parsing error:', parseError.message);
+                setError('Invalid expiration date received');
+                return; // Stop further execution since the expiration date is invalid
+              }
+            } else {
+              setError('Expiration date is missing in the response');
+              return; // Stop further execution
+            }
+          
+            // Redirect to home page after successful login
+            navigate('/');
+          } else {
+            // Log server error response for debugging
+            console.error('Server error:', loginData);
+          
+            // Display server message to the user, if provided
+            if (loginData && loginData.message) {
+              setError(loginData.message);
+            } else {
+              // Fallback error message if server doesn't provide one
+              setError('An error occurred during login');
+            }
+          }          
+        } else if (data.message) {
+          setError(data.message);
         } else {
-          setError(loginData.message || 'Login failed');
+          setError('Unexpected response format');
         }
       } else {
-        // Display server-provided error message
-        setError(data.message || 'Registration failed');
+        setError('An error occurred during registration');
       }
     } catch (err) {
+      console.error('Registration Error:', err.message);
       setError('An error occurred. Please try again.');
     }
   };
+  
 
   return (
     <div className="login-register-wrapper">

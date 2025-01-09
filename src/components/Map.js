@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { toZonedTime } from 'date-fns-tz';
 import { parseISO, isWithinInterval, format, setMinutes, setHours } from 'date-fns';
 
@@ -264,26 +265,26 @@ function Map() {
     return classroomStatus.map((classroom, index) => (
       <div key={index} className="classroom-container">
         <div className="classroom-header">
-          <a href={`/classroom/${classroom.campusName || 'MS'}/${classroom.number}/${classroom.roomId}`} className="classroom-number">
+          <Link to={`/classroom/${classroom.campusName || 'MS'}/${classroom.number}/${classroom.roomId}`} className="classroom-number">
             {classroom.number}
-          </a>
+          </Link>
           <span className={`status-circle ${classroom.status === 'taken' ? 'taken' : classroom.status === 'canceled' ? 'canceled' : 'empty'}`}></span>
         </div>
         <div className="classroom-details">
           {classroom.status === 'taken' ? (
             <>
-              <a href={`/teacher/${classroom.teacherName}/${classroom.teacherTitle}/${classroom.teacherId}`} className="teacher-name">
+              <Link to={`/teacher/${classroom.teacherName}/${classroom.teacherTitle}/${classroom.teacherId}`} className="teacher-name">
                 {classroom.teacherName || 'No teacher'}
-              </a>
+              </Link>
               <div className="class-title">
                 {classroom.classTitle || 'No subject'}
               </div>
             </>
           ) : classroom.status === 'canceled' ? (
             <>
-              <a href={`/teacher/${classroom.teacherName}/${classroom.teacherTitle}/${classroom.teacherId}`} className="teacher-name">
+              <Link to={`/teacher/${classroom.teacherName}/${classroom.teacherTitle}/${classroom.teacherId}`} className="teacher-name">
                 {classroom.teacherName || 'No teacher'}
-              </a>
+              </Link>
               <div className="class-title">
                 {classroom.classTitle || 'No subject'}
               </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../contexts/UserContext'; // Import the custom hook
+import { parse } from 'date-fns';
+import { useUser } from '../contexts/UserContext';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -13,7 +14,6 @@ function Login() {
     event.preventDefault();
 
     try {
-      // Send login request
       const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -23,21 +23,21 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        // Update context and localStorage with token and expiration date
         setIsLoggedIn(true);
         setTeacherId(data.teacherId);
         setToken(data.token);
 
-        // Parse and set expiration date in the correct format
-        const expirationDate = new Date(data.expiration.split('/').reverse().join('-')).toISOString();
+        // Properly parse expiration date
+        const expirationDate = parse(data.expiration, 'M/d/yyyy', new Date()).toISOString();
         setExpirationDate(expirationDate);
 
-        // Redirect to home page after successful login
+        // Redirect to home page
         navigate('/');
       } else {
         setError(data.message || 'Login failed');
       }
     } catch (err) {
+      console.error('Login Error:', err);
       setError('An error occurred. Please try again.');
     }
   };

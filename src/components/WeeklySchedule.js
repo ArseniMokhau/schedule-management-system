@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { format, startOfWeek, endOfWeek, parseISO, isWithinInterval, addWeeks } from 'date-fns';
 import { ScheduleType } from '../data/Enums';
 import { useUser } from '../contexts/UserContext';
@@ -272,17 +273,23 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
               schedule[index].map((classData, idx) => (
                 <div key={idx} className={`weekly-schedule-class-card weekly-schedule-${classData.classType.toLowerCase()}`}>
                   <h4 className="weekly-schedule-class-title">{classData.classTitle}</h4>
-                  <a href={`/classroom/${classData.campusName}/${classData.roomNumber}/${classData.roomId}`} className="classroom-number">
+                  <Link
+                    to={`/classroom/${classData.campusName}/${classData.roomNumber}/${classData.roomId}`}
+                    className="classroom-number"
+                  >
                     {classData.roomNumber}
-                  </a>
+                  </Link>
                   <p className="weekly-schedule-class-time">
                     {format(parseISO(`2000-01-01T${classData.recurrenceStartTime}`), 'HH:mm')} -{' '}
                     {format(parseISO(`2000-01-01T${classData.recurrenceEndTime}`), 'HH:mm')}
                   </p>
                   {classData.isCanceled && (<span className="">Cancelled</span>)}
-                  <a href={`/teacher/${classData.teacherName}/${classData.teacherTitle}/${classData.teacherId}`} className="weekly-schedule-class-teacher">
-                    {classData.teacherTitle || 'No title'}   {classData.teacherName}
-                  </a>
+                  <Link
+                    to={`/teacher/${classData.teacherName}/${classData.teacherTitle}/${classData.teacherId}`}
+                    className="weekly-schedule-class-teacher"
+                  >
+                    {classData.teacherName}
+                  </Link>
                   <div className="class-card-buttons">
                     {isLoggedIn && teacherId === classData.teacherId && classData.classType === 'One-Time' && (
                       <button

@@ -1,6 +1,6 @@
 import './App.css';
 import React, { lazy, useEffect, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
 import Navbar from './components/Navbar';
 import Spinner from './components/Spinner';
