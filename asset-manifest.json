@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/schedule-management-system/static/css/main.d9125a40.css",
-    "main.js": "/schedule-management-system/static/js/main.edcabcfd.js",
+    "main.js": "/schedule-management-system/static/js/main.46b838e9.js",
     "static/js/688.b6f0489a.chunk.js": "/schedule-management-system/static/js/688.b6f0489a.chunk.js",
-    "static/js/390.a9338bdb.chunk.js": "/schedule-management-system/static/js/390.a9338bdb.chunk.js",
+    "static/js/390.1e472422.chunk.js": "/schedule-management-system/static/js/390.1e472422.chunk.js",
     "static/js/66.10a8c132.chunk.js": "/schedule-management-system/static/js/66.10a8c132.chunk.js",
     "static/js/662.4ec60401.chunk.js": "/schedule-management-system/static/js/662.4ec60401.chunk.js",
     "static/js/380.aa1c4327.chunk.js": "/schedule-management-system/static/js/380.aa1c4327.chunk.js",
@@ -17,9 +17,9 @@
     "static/media/qr.png": "/schedule-management-system/static/media/qr.a3e5c59d148691b73a45.png",
     "index.html": "/schedule-management-system/index.html",
     "main.d9125a40.css.map": "/schedule-management-system/static/css/main.d9125a40.css.map",
-    "main.edcabcfd.js.map": "/schedule-management-system/static/js/main.edcabcfd.js.map",
+    "main.46b838e9.js.map": "/schedule-management-system/static/js/main.46b838e9.js.map",
     "688.b6f0489a.chunk.js.map": "/schedule-management-system/static/js/688.b6f0489a.chunk.js.map",
-    "390.a9338bdb.chunk.js.map": "/schedule-management-system/static/js/390.a9338bdb.chunk.js.map",
+    "390.1e472422.chunk.js.map": "/schedule-management-system/static/js/390.1e472422.chunk.js.map",
     "66.10a8c132.chunk.js.map": "/schedule-management-system/static/js/66.10a8c132.chunk.js.map",
     "662.4ec60401.chunk.js.map": "/schedule-management-system/static/js/662.4ec60401.chunk.js.map",
     "380.aa1c4327.chunk.js.map": "/schedule-management-system/static/js/380.aa1c4327.chunk.js.map",
@@ -32,6 +32,6 @@
   },
   "entrypoints": [
     "static/css/main.d9125a40.css",
-    "static/js/main.edcabcfd.js"
+    "static/js/main.46b838e9.js"
   ]
 }
