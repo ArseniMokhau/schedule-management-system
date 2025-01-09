@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/schedule-management-system/static/css/main.d9125a40.css",
-    "main.js": "/schedule-management-system/static/js/main.84743a54.js",
+    "main.js": "/schedule-management-system/static/js/main.2b7a1c01.js",
     "static/js/688.9d04b067.chunk.js": "/schedule-management-system/static/js/688.9d04b067.chunk.js",
     "static/js/390.9c171f26.chunk.js": "/schedule-management-system/static/js/390.9c171f26.chunk.js",
     "static/js/66.5c1d320a.chunk.js": "/schedule-management-system/static/js/66.5c1d320a.chunk.js",
@@ -15,7 +15,7 @@
     "static/media/qr.png": "/schedule-management-system/static/media/qr.a3e5c59d148691b73a45.png",
     "index.html": "/schedule-management-system/index.html",
     "main.d9125a40.css.map": "/schedule-management-system/static/css/main.d9125a40.css.map",
-    "main.84743a54.js.map": "/schedule-management-system/static/js/main.84743a54.js.map",
+    "main.2b7a1c01.js.map": "/schedule-management-system/static/js/main.2b7a1c01.js.map",
     "688.9d04b067.chunk.js.map": "/schedule-management-system/static/js/688.9d04b067.chunk.js.map",
     "390.9c171f26.chunk.js.map": "/schedule-management-system/static/js/390.9c171f26.chunk.js.map",
     "66.5c1d320a.chunk.js.map": "/schedule-management-system/static/js/66.5c1d320a.chunk.js.map",
@@ -28,6 +28,6 @@
   },
   "entrypoints": [
     "static/css/main.d9125a40.css",
-    "static/js/main.84743a54.js"
+    "static/js/main.2b7a1c01.js"
   ]
 }
