@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import WeeklySchedule from '../components/WeeklySchedule';
 import { ScheduleType } from '../data/Enums';
@@ -7,8 +7,13 @@ import { TitleDictionary } from '../data/Titles';
 
 function Teacher() {
   const { name, title, id } = useParams();
+  const [refreshSchedule, setRefreshSchedule] = useState(false);
 
   const shortTitle = TitleDictionary[title] || title;
+
+  const handleClassCancelled = () => {
+    setRefreshSchedule((prev) => !prev);
+  };
 
   return (
     <div className="teacher-page">
@@ -25,7 +30,7 @@ function Teacher() {
 
       <div className="schedule-section">
         <h1>Weekly Schedule</h1>
-        <WeeklySchedule id={id} scheduleType={ScheduleType.TEACHER} />
+        <WeeklySchedule id={id} scheduleType={ScheduleType.TEACHER}  refreshTrigger={refreshSchedule} onClassCancelled={handleClassCancelled}/>
       </div>
     </div>
   );

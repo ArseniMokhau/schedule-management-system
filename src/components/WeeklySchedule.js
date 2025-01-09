@@ -5,7 +5,7 @@ import { ScheduleType } from '../data/Enums';
 import { useUser } from '../contexts/UserContext';
 import Spinner from './Spinner';
 
-function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
+function WeeklySchedule({ id, scheduleType, refreshTrigger, onClassCancelled }) {
   const [loading, setLoading] = useState(true);
   const [classes, setClasses] = useState([]);
   const { isLoggedIn, teacherId, token} = useUser();
@@ -65,7 +65,7 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       return weekNumber % 2 === 0 ? "even" : "odd";
     };
   
-    const currentWeekParity = calculateWeekParity(selectedWeek); // Determine parity of selected week
+    const currentWeekParity = calculateWeekParity(selectedWeek);
   
     const weeklySchedule = daysOfWeek.map(() => []);
   
@@ -76,12 +76,12 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       classData.recurringClasses.forEach((recurringClass) => {
         const convertToISODate = (dateString) => {
           const [month, day, year] = dateString.split('/');
-          return new Date(`${year}-${month}-${day}`).toISOString(); // Return ISO format directly
+          return new Date(`${year}-${month}-${day}`).toISOString();
         };
   
         const isClassCanceledForWeek = recurringClass.canceledDates.some((canceledDate) => {
-          const isoDate = convertToISODate(canceledDate); // Convert to ISO format
-          const parsedCanceledDate = parseISO(isoDate); // Parse the ISO date
+          const isoDate = convertToISODate(canceledDate);
+          const parsedCanceledDate = parseISO(isoDate);
   
           return isWithinInterval(parsedCanceledDate, { start: weekStart, end: weekEnd });
         });
@@ -115,14 +115,14 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
         classData.oneTimeClasses.forEach((oneTimeClass) => {
           const convertToISODate = (dateString) => {
             const [month, day, year] = dateString.split('/');
-            return new Date(`${year}-${month}-${day}`).toISOString(); // Return ISO format directly
+            return new Date(`${year}-${month}-${day}`).toISOString();
           };
   
-          const isoDate = convertToISODate(oneTimeClass.oneTimeClassFullDate); // Convert to ISO format
+          const isoDate = convertToISODate(oneTimeClass.oneTimeClassFullDate);
           const classDate = parseISO(isoDate);
   
           if (isWithinInterval(classDate, { start: weekStart, end: weekEnd })) {
-            const dayIndex = remapDayIndex(classDate.getDay()); // Apply remap for one-time classes
+            const dayIndex = remapDayIndex(classDate.getDay())
             weeklySchedule[dayIndex].push({
               ...classData,
               date: classDate,
@@ -176,7 +176,6 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
       const data = await response.json();
   
       if (data.message === 'Class and all related data deleted successfully.') {
-        // Update classes state to remove deleted class
         const updatedClasses = classes.filter(
           (classItem) => classItem.classId !== classData.classId
         );
@@ -199,19 +198,16 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
     let method = 'POST';
     let requestBody = null;
 
-    // Calculate the target date based on the selected week and recurrenceDay
     const calculateRecurrenceDate = () => {
-      const targetDate = new Date(selectedWeek); // Start with the selected week date
-      const currentDay = targetDate.getDay(); // Get the day of the week for the selected date
-      const targetDay = recurrenceDay === 0 ? 7 : recurrenceDay; // If recurrenceDay is 0 (Sunday), treat it as 7 (Sunday in JS)
+      const targetDate = new Date(selectedWeek);
+      const currentDay = targetDate.getDay();
+      const targetDay = recurrenceDay === 0 ? 7 : recurrenceDay;
 
-      // Adjust the targetDate to the next occurrence of the recurrenceDay
       const dayDifference = targetDay - currentDay;
       targetDate.setDate(targetDate.getDate() + dayDifference);
 
-      // Ensure the target date is within the correct week (handling edge cases where the recurrence would fall outside)
       if (dayDifference <= 0) {
-        targetDate.setDate(targetDate.getDate()); // Move to the next week if the recurrence day is already past
+        targetDate.setDate(targetDate.getDate());
       }
 
       return targetDate;
@@ -254,15 +250,16 @@ function WeeklySchedule({ id, scheduleType, refreshTrigger }) {
   
       const data = await response.json();
       if (data.message.includes("successfully")) {
-        // Update the status of the class
   
         alert(`Class ${isCanceled ? 'restored' : 'canceled'} successfully.`);
+        onClassCancelled()
       } else {
         throw new Error('Unexpected response message');
       }
     } catch (error) {
       console.error('Error updating class:', error);
       alert('An error occurred while updating the class. Please try again.');
+      onClassCancelled()
     }
   };
 

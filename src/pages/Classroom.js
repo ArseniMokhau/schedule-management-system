@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import WeeklySchedule from '../components/WeeklySchedule';
 import { ScheduleType } from '../data/Enums';
@@ -6,7 +6,12 @@ import campusData from '../data/CampusData';
 
 function Classroom() {
   const { campus, number, id } = useParams();
-  const campusInfo = campusData[campus]; // Retrieve the data for the specific campus
+  const campusInfo = campusData[campus];
+  const [refreshSchedule, setRefreshSchedule] = useState(false);
+
+  const handleClassCancelled = () => {
+    setRefreshSchedule((prev) => !prev);
+  };
 
   return (
     <div className="classroom-page-container">
@@ -21,7 +26,7 @@ function Classroom() {
       {/* Classroom Weekly Schedule */}
       <div className="classroom-page-schedule-section">
         <h2 className="classroom-page-schedule-title">Classroom Weekly Schedule</h2>
-        <WeeklySchedule id={id} scheduleType={ScheduleType.ROOM} />
+        <WeeklySchedule id={id} scheduleType={ScheduleType.ROOM}  refreshTrigger={refreshSchedule} onClassCancelled={handleClassCancelled}/>
       </div>
 
       {/* Campus Info Section */}
@@ -56,7 +61,7 @@ function Classroom() {
             src={require('../resources/maphelper/qr.png')}
             alt="QR Code for MapHelper"
             className="classroom-page-maphelper-qr"
-            style={{ width: '200px', height: '200px' }} // Adjust size as needed
+            style={{ width: '200px', height: '200px' }}
           />
         </a>
         <p>Scan the QR code or click it to open the MapHelper application.</p>

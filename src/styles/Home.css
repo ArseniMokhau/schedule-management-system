@@ -25,7 +25,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out; /* For smooth expand/collapse animation */
+    transition: all 0.3s ease-in-out;
   }
   
   .teacher-list-container.collapsed {
@@ -36,7 +36,7 @@
   }
   
   .teacher-list-container.expanded {
-    width: 300px; /* Specify the width when expanded */
+    width: 300px;
     opacity: 1;
     visibility: visible;
     padding: 20px;

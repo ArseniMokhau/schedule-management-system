@@ -19,18 +19,16 @@ export const EditClass = ({ classId, onClassUpdated, onClose }) => {
   const [recurrenceStartTime, setRecurrenceStartTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [recurrenceEndTime, setRecurrenceEndTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
-  const [classrooms, setClassrooms] = useState([]); // Store the fetched classrooms
+  const [classrooms, setClassrooms] = useState([]);
 
   useEffect(() => {
-    // Fetch classrooms from the API
     const fetchClassrooms = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/Main/room/all`);
         const data = await response.json();
         if (response.ok) {
-          // Sort classrooms based on room number (numerically)
           const sortedClassrooms = data.sort((a, b) => a.RoomNumber - b.RoomNumber);
-          setClassrooms(sortedClassrooms); // Update the classrooms state with sorted rooms
+          setClassrooms(sortedClassrooms);
         } else {
           console.error('Failed to fetch classrooms:', data.message);
         }
@@ -40,10 +38,9 @@ export const EditClass = ({ classId, onClassUpdated, onClose }) => {
     };
 
     fetchClassrooms();
-  }, []); // Only run once when the component mounts
+  }, []);
 
   useEffect(() => {
-    // Fetch class data to populate the form
     const fetchClassData = async () => {
       try {
         const response = await fetch(
@@ -117,7 +114,7 @@ export const EditClass = ({ classId, onClassUpdated, onClose }) => {
       if (response.ok) {
         alert('Class updated successfully!');
         onClassUpdated();
-        onClose(); // Close the pop-up/modal after successful update
+        onClose();
       } else {
         alert('Error updating class: ' + result.message);
       }

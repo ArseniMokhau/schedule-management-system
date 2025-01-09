@@ -5,7 +5,7 @@
     align-items: center;
     padding: 10px 20px;
     background-color: #007bff;
-    height: 50px; /* Reduced height for the navbar */
+    height: 50px;
     color: white;
     border-bottom: 2px solid #0056b3;
   }

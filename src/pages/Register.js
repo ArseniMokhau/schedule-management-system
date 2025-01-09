@@ -57,24 +57,21 @@ function Register() {
               } catch (parseError) {
                 console.error('Date parsing error:', parseError.message);
                 setError('Invalid expiration date received');
-                return; // Stop further execution since the expiration date is invalid
+                return;
               }
             } else {
               setError('Expiration date is missing in the response');
-              return; // Stop further execution
+              return;
             }
           
             // Redirect to home page after successful login
             navigate('/');
           } else {
-            // Log server error response for debugging
             console.error('Server error:', loginData);
           
-            // Display server message to the user, if provided
             if (loginData && loginData.message) {
               setError(loginData.message);
             } else {
-              // Fallback error message if server doesn't provide one
               setError('An error occurred during login');
             }
           }          

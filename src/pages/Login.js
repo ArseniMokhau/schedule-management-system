@@ -27,7 +27,6 @@ function Login() {
         setTeacherId(data.teacherId);
         setToken(data.token);
 
-        // Properly parse expiration date
         const expirationDate = parse(data.expiration, 'M/d/yyyy', new Date()).toISOString();
         setExpirationDate(expirationDate);
 

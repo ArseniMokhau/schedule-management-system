@@ -18,8 +18,8 @@ const CreateClass = ({ onClassCreated }) => {
   const [recurrenceStartTime, setRecurrenceStartTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [recurrenceEndTime, setRecurrenceEndTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
-  const [classrooms, setClassrooms] = useState([]); // Store the fetched classrooms
-  const [campuses] = useState(['MS']); // List of campuses (in this case, you can populate this if needed)
+  const [classrooms, setClassrooms] = useState([]);
+  const [campuses] = useState(['MS']);
 
   useEffect(() => {
     // Fetch classrooms from the API
@@ -32,7 +32,7 @@ const CreateClass = ({ onClassCreated }) => {
           const sortedClassrooms = data.sort((a, b) => {
             return a.RoomNumber - b.RoomNumber;
           });
-          setClassrooms(sortedClassrooms); // Update the classrooms state with sorted rooms
+          setClassrooms(sortedClassrooms);
         } else {
           console.error('Failed to fetch classrooms:', data.message);
         }
@@ -42,7 +42,7 @@ const CreateClass = ({ onClassCreated }) => {
     };
 
     fetchClassrooms();
-  }, []); // Only run once when the component mounts
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
     };
 
     checkExpiration();
-    const interval = setInterval(checkExpiration, 10000 * 60); // Check every minute
+    const interval = setInterval(checkExpiration, 10000 * 60); // Check every ten minutes
     return () => clearInterval(interval);
   }, [expirationDate]);
 

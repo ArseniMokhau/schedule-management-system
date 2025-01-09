@@ -20,19 +20,19 @@
   /* Teacher list animation */
   .teacher-list {
     overflow: hidden;
-    max-height: 0; /* Initially collapsed */
-    visibility: hidden; /* Completely hide the list */
-    transition: max-height 0.5s ease-out, visibility 0s 0.1s; /* Add delay to visibility */
+    max-height: 0;
+    visibility: hidden;
+    transition: max-height 0.5s ease-out, visibility 0s 0.1s;
   }
   
   .teacher-list.expanded {
-    max-height: 500px; /* Adjust this value as needed */
-    visibility: visible; /* Make the list visible when expanded */
-    transition: max-height 0.5s ease-out, visibility 0s; /* Make visibility change instantly */
+    max-height: 500px;
+    visibility: visible;
+    transition: max-height 0.5s ease-out, visibility 0s;
   }
   
   .scrollable-teacher-list {
-    max-height: 400px; /* Optional: restrict the height for scrolling */
+    max-height: 400px;
     overflow-y: auto;
   }
   

@@ -98,7 +98,6 @@ function Map() {
   }, [selectedDate]);  
 
   const filterClassroomsByTime = useCallback(() => {
-    // Mapping of days to their corresponding day numbers
     const dayMapping = {
       Sunday: 0,
       Monday: 1,
